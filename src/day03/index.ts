@@ -23,7 +23,7 @@ const parseInput = (rawInput: string) => {
     const row = [...lines[rowNum]];
     let numberFrom: Coordinate | undefined = undefined;
     let numberValue: string | undefined = undefined;
-    for (let colNum = 0; colNum < row.length; rowNum += 1) {
+    for (let colNum = 0; colNum < row.length; colNum += 1) {
       const cell = row[colNum];
       if (/\d/.test(cell)) {
         if (numberFrom === undefined) {
@@ -100,7 +100,26 @@ const part1 = (rawInput: string) => {
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput);
 
-  return;
+  const gears = input.filter(
+    (v) => v.type === "symbol" && v.value === "*",
+  ) as SymbolObject[];
+
+  const numberAreas: [NumberObject, Coordinate[]][] = (
+    input.filter((v) => v.type === "number") as NumberObject[]
+  ).map((number) => [number, line(number.from, number.to)]);
+
+  let gearRatioSum = 0;
+  for (const gear of gears) {
+    const adjacentNumbers = numberAreas.filter(([, area]) =>
+      area.some((tile) => isAdjacent(tile, gear.position)),
+    );
+    if (adjacentNumbers.length === 2) {
+      const [a, b] = adjacentNumbers;
+      gearRatioSum += a[0].value * b[0].value;
+    }
+  }
+
+  return gearRatioSum;
 };
 
 run({
@@ -124,10 +143,19 @@ run({
   },
   part2: {
     tests: [
-      // {
-      //   input: ``,
-      //   expected: "",
-      // },
+      {
+        input: `467..114..
+...*......
+..35..633.
+......#...
+617*......
+.....+.58.
+..592.....
+......755.
+...$.*....
+.664.598..`,
+        expected: 467835,
+      },
     ],
     solution: part2,
   },
