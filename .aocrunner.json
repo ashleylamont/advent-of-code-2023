@@ -55,27 +55,29 @@
           "40529",
           "50824"
         ],
-        "time": 1.371458
+        "time": 1.3635
       },
       "part2": {
         "solved": true,
         "result": "7258152",
         "attempts": [],
-        "time": 1.665583
+        "time": 1.446125
       }
     },
     {
       "part1": {
-        "solved": false,
-        "result": null,
-        "attempts": [],
-        "time": null
+        "solved": true,
+        "result": "825516882",
+        "attempts": [
+          "1440510920"
+        ],
+        "time": 0.844583
       },
       "part2": {
-        "solved": false,
-        "result": null,
+        "solved": true,
+        "result": "136096660",
         "attempts": [],
-        "time": null
+        "time": 2.172625
       }
     },
     {
