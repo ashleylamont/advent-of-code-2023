@@ -57,3 +57,15 @@ export function memoize(
     };
   };
 }
+
+export function transpose<T>(arr: T[][]): T[][] {
+  const transposedArray: T[][] = Array(arr[0].length)
+    .fill(null)
+    .map(() => []);
+  for (const row of arr) {
+    for (let i = 0; i < row.length; i++) {
+      transposedArray[i].push(row[i]);
+    }
+  }
+  return transposedArray;
+}
