@@ -29,3 +29,31 @@
  *     import { myUtil } from '../utils'
  *
  */
+import { LRUCache } from "lru-cache";
+
+// typescript-memoize is built for TS4 experimental legacy decorators so :shrug: here we go
+export function memoize(
+  hashFunction = (...args: unknown[]) =>
+    args.map((a, i) => `${i}:${a}`).join(";"),
+  lruCacheSize?: number,
+) {
+  return function actualMemoize(
+    originalMethod: any,
+    // context: ClassMethodDecoratorContext,
+  ) {
+    let cache = lruCacheSize
+      ? new LRUCache({
+          max: lruCacheSize,
+        })
+      : new Map<string, any>();
+    return function replacementMethod(this: any, ...args: unknown[]) {
+      const hashedArgs = hashFunction(args);
+      if (cache.has(hashedArgs)) {
+        return cache.get(hashedArgs);
+      }
+      const result = originalMethod.call(this, ...args);
+      cache.set(hashedArgs, result);
+      return result;
+    };
+  };
+}
